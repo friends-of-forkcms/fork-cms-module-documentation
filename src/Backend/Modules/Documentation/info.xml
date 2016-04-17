@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>Documentation</name>
+	<version>1.0.0</version>
+	<requirements>
+		<minimum_version>2.0.0</minimum_version>
+	</requirements>
+	<description>
+		<![CDATA[
+			The Documentation module allows you to parse and display Github markdown documentation on your website.
+		]]>
+	</description>
+	<authors>
+		<author>
+			<name><![CDATA[Jesse Dobbelaere]]></name>
+			<url><![CDATA[http://www.jessedobbelae.re]]></url>
+		</author>
+	</authors>
+	<events>
+		<event application="backend" name="after_saved_settings"><![CDATA[Triggered when the settings are saved.]]></event>
+	</events>
+</module>
