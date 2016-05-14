@@ -9,18 +9,6 @@ namespace Frontend\Modules\Documentation\Engine;
 class DocumentationHelper
 {
     /**
-     * Convert directory to URL
-     * Rule: Documentation files have underscore to seperate words
-     *
-     * @param string $dir
-     * @return string
-     */
-    public static function directoryToUrl($dir)
-    {
-        return str_replace(' ', '-', $dir);
-    }
-
-    /**
      * Convert filename to label
      * Rule: Documentation files have underscore to seperate words
      *
@@ -41,31 +29,7 @@ class DocumentationHelper
      */
     public static function filenameToUrl($filename)
     {
-        return str_replace('_', '-', $filename);
-    }
-
-    /**
-     * Convert url to directory
-     * Rule: Documentation files have underscore to seperate words
-     *
-     * @param string $url
-     * @return string
-     */
-    public static function urlToDirectory($url)
-    {
-        return str_replace('-', ' ', $url);
-    }
-
-    /**
-     * Convert url to filename
-     * Rule: Documentation files have underscore to seperate words
-     *
-     * @param string $url
-     * @return string
-     */
-    public static function urlToFilename($url)
-    {
-        return str_replace('-', '_', $url);
+        return str_replace(array(' ', '_'), '-', $filename);
     }
 
     /**

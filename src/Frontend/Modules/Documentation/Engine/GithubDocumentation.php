@@ -148,7 +148,7 @@ class GithubDocumentation implements RepositoryInterface
 
             // Create the navigation item
             $name = DocumentationHelper::cleanupName($element['name']);
-            $urlSlug = DocumentationHelper::directoryToUrl($name);
+            $urlSlug = DocumentationHelper::filenameToUrl($name);
             $fullUrl = FrontendNavigation::getURLForBlock('Documentation', 'Detail') . '/' . $parentSlug . $urlSlug;
             $navItem = new NavigationItem(
                 DocumentationHelper::filenameToLabel($name),
@@ -171,9 +171,13 @@ class GithubDocumentation implements RepositoryInterface
 
             // If directory, we fetch the children items
             if ($element['type'] === 'dir') {
-                $repoContents = $githubRepoApi->contents()->show($this->organization, $this->repository, $element['path']);
+                $repoContents = $githubRepoApi->contents()->show(
+                    $this->organization,
+                    $this->repository,
+                    $element['path']
+                );
                 $parentSlugUpdated = $parentSlug .
-                    DocumentationHelper::directoryToUrl(DocumentationHelper::cleanupName($element['name'])) . '/';
+                    DocumentationHelper::filenameToUrl(DocumentationHelper::cleanupName($element['name'])) . '/';
                 $children = $this->buildTree($repoContents, $parentSlugUpdated, $navItem);
                 if (!empty($children->getItems())) {
                     $navItem->setChildren($children);
@@ -196,7 +200,9 @@ class GithubDocumentation implements RepositoryInterface
     private function getContent($filePath)
     {
         // Make URL to the file in our repository
-        $url = 'repos/' . urlencode($this->organization) . '/' . urlencode($this->repository) . '/contents/' . $filePath;
+        $organisationName = urlencode($this->organization);
+        $repositoryName = urlencode($this->repository);
+        $url = "repos/$organisationName/$repositoryName/contents/$filePath";
 
         // Fetch the response
         $response = $this->client->getHttpClient()->get($url)->json();
