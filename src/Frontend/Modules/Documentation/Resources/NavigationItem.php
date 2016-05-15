@@ -102,6 +102,50 @@ class NavigationItem
     }
 
     /**
+     * Fetch the previous item in the navigation.
+     * @return NavigationItem|null
+     */
+    public function getPreviousItem()
+    {
+        if (empty($this->parent) || empty($this->parent->getChildren())) {
+            return null;
+        }
+
+        // Find the current index
+        $parentChildrenItems = $this->parent->getChildren()->getItems();
+        $currentIndex = array_search($this, $parentChildrenItems);
+
+        // Find previous item
+        if ($currentIndex !== false && isset($parentChildrenItems[$currentIndex - 1])) {
+            return $parentChildrenItems[$currentIndex - 1];
+        }
+
+        return null;
+    }
+
+    /**
+     * Fetch the next item in the navigation
+     * @return NavigationItem|null
+     */
+    public function getNextItem()
+    {
+        if (empty($this->parent) || empty($this->parent->getChildren())) {
+            return null;
+        }
+
+        // Find the current index
+        $parentChildrenItems = $this->parent->getChildren()->getItems();
+        $currentIndex = array_search($this, $parentChildrenItems);
+
+        // Find previous item
+        if ($currentIndex !== false && isset($parentChildrenItems[$currentIndex + 1])) {
+            return $parentChildrenItems[$currentIndex + 1];
+        }
+
+        return null;
+    }
+
+    /**
      * @return NavigationItem
      */
     public function getParent()

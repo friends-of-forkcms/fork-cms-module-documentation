@@ -109,5 +109,10 @@ class Detail extends FrontendBaseBlock
     {
         $this->tpl->assign('articleData', $this->articleHtml);
         $this->tpl->assign('articleEditLink', $this->articleItem->getEditUrl());
+
+        $prevLink = $this->articleItem->getPreviousItem();
+        $nextLink = $this->articleItem->getNextItem();
+        $this->tpl->assign('prevLink', isset($prevLink) ? $prevLink->toArray() : []);
+        $this->tpl->assign('nextLink', isset($nextLink) ? $nextLink->toArray() : []);
     }
 }
