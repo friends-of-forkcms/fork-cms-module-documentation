@@ -3,8 +3,9 @@
 namespace Frontend\Modules\Documentation\Resources;
 
 /**
- * Class Navigation
- * @package Frontend\Modules\Documentation\Resources
+ * Navigation
+ *
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 class Navigation
 {
