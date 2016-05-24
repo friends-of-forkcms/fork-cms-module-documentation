@@ -3,8 +3,9 @@
 namespace Frontend\Modules\Documentation\Engine;
 
 /**
- * Class DocumentationHelper
- * @package Frontend\Modules\Documentation\Engine
+ * DocumentationHelper
+ *
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 class DocumentationHelper
 {

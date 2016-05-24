@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * In this file we store all generic functions that we will be using in the documentation module
- * @package Frontend\Modules\Documentation\Engine
+ *
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 class Model
 {

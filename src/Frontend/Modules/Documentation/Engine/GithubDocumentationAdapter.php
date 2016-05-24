@@ -7,8 +7,9 @@ use Frontend\Modules\Documentation\Resources\NavigationItem;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class GithubDocumentationAdapter
- * @package Frontend\Modules\Documentation\Engine
+ * GithubDocumentationAdapter
+ *
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 class GithubDocumentationAdapter implements DocumentationInterface
 {

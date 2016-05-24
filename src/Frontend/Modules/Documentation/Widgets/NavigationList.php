@@ -7,8 +7,9 @@ use Frontend\Modules\Documentation\Engine\Model;
 use Frontend\Modules\Documentation\Resources\Navigation;
 
 /**
- * Class NavigationList
- * @package Frontend\Modules\Documentation\Widgets
+ * NavigationList
+ *
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 class NavigationList extends FrontendBaseWidget
 {
