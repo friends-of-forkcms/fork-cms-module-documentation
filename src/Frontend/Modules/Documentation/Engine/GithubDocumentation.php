@@ -17,8 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * Class GithubDocumentation
- * @package Frontend\Modules\Documentation\Engine
+ * GithubDocumentation
+ *
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 class GithubDocumentation implements RepositoryInterface
 {

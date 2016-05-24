@@ -9,13 +9,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator;
 
 /**
+ * WebhookCacheClear
+ *
  * Post-receive action for Github webhooks.
  * Go to Github repository > Settings > Webhooks > Add webhook.
  * Enter this action url as payload url (/webhook-cache-clear).
  * Choose application/json content-type and just use the push event.
  *
- * Class WebhookCacheClear
- * @package Frontend\Modules\Documentation\Ajax
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 class WebhookCacheClear extends FrontendBaseBlock
 {
