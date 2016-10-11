@@ -5,8 +5,9 @@ namespace Frontend\Modules\Documentation\Resources;
 use Frontend\Modules\Documentation\Engine\Model;
 
 /**
- * Class NavigationItem
- * @package Frontend\Modules\Documentation\Resources
+ * NavigationItem
+ *
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 class NavigationItem
 {

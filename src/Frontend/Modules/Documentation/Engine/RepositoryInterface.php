@@ -6,8 +6,9 @@ use Frontend\Modules\Documentation\Resources\Navigation;
 use Frontend\Modules\Documentation\Resources\NavigationItem;
 
 /**
- * Interface RepositoryInterface
- * @package Frontend\Modules\Documentation\Engine
+ * RepositoryInterface
+ *
+ * @author Jesse Dobbelaere <jesse@dobbelae.re>
  */
 interface RepositoryInterface
 {
