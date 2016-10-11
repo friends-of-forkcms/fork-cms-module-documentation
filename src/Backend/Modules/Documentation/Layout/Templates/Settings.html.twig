@@ -1,0 +1,57 @@
+{% extends '/Layout/Templates/base.html.twig' %}
+
+{% block content %}
+    {% form settings %}
+        <div class="row fork-module-content">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            {{ 'lbl.Github'|trans|ucfirst }}
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="content-block">
+                            <div class="content-title">
+                                <p>{{ 'lbl.Repository'|trans|ucfirst }}</p>
+                                <div class="help-block">{{ 'msg.RepositoryHelp'|trans|ucfirst|raw }}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="organization" class="control-label">{{ 'lbl.Organization'|trans|ucfirst }}</label>
+                                {% form_field organization %} {% form_field_error organization %}
+                            </div>
+                            <div class="form-group">
+                                <label for="repository" class="control-label">{{ 'lbl.Repository'|trans|ucfirst }}</label>
+                                {% form_field repository %} {% form_field_error repository %}
+                            </div>
+                        </div>
+
+                        <div class="content-block">
+                            <div class="content-title">
+                                <p>{{ 'lbl.Authentication'|trans|ucfirst }}</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="authToken" class="control-label">{{ 'lbl.AuthToken'|trans|ucfirst }}</label>
+                                {% form_field auth_token %} {% form_field_error auth_token %}
+                                <div class="help-block">{{ 'msg.TokenHelp'|trans|ucfirst }}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row fork-module-actions">
+            <div class="col-md-12">
+                <div class="btn-toolbar">
+                    <div class="btn-group pull-right" role="group">
+                        <button id="save" type="submit" name="save" class="btn btn-primary">
+                            <span class="fa fa-floppy-o"></span>{{ 'lbl.Save'|trans|ucfirst }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endform %}
+{% endblock %}

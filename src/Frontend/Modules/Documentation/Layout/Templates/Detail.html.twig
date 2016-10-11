@@ -1,0 +1,28 @@
+{#
+  variables that are available:
+  - {{ articleData }}: contains all categories, along with all questions inside a category
+#}
+
+{% if not articleData %}
+    <article>
+        <div>
+            <p>{{ 'msg.DocumentationNoItems'|trans }}</p>
+        </div>
+    </article>
+{% endif %}
+
+{% if articleData %}
+    <article>
+        {% if articleEditLink %}<a href="{{ articleEditLink }}" class="button">Edit on Github</a>{% endif %}
+        <div>
+            {{ articleData|raw }}
+        </div>
+    </article>
+
+    <div class="pageNavigation">
+        <ul>
+            {% if prevLink %}<li class="previousLink"><a href="{{ prevLink.urlSlug }}" rel="prev">&lsaquo; {{ prevLink.displayName|ucfirst }}</a></li>{% endif %}
+            {% if nextLink %}<li class="nextLink"><a href="{{ nextLink.urlSlug }}" rel="next">&rsaquo; {{ nextLink.displayName|ucfirst }}</a></li>{% endif %}
+        </ul>
+    </div>
+{% endif %}

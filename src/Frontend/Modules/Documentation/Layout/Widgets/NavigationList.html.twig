@@ -1,0 +1,27 @@
+{#
+  variables that are available:
+  - {{ widgetDocNavList }}: contains an array with all posts for the category, each element contains data about the post
+#}
+
+{% if widgetDocNavList %}
+    <ul>
+        {% for navItem in widgetDocNavList %}
+            <li {% if navItem.selected %}class="selected"{% endif %}>
+                <a href="{{ navItem.fullUrl }}" title="{{ navItem.displayName }}">{{ navItem.displayName|ucfirst }}</a>
+
+                {% if navItem.selected %}
+                    {% if navItem.children %}
+                        <ul>
+                            {% for navItemChild in navItem.children %}
+                                <li {% if navItemChild.selected %}class="selected"{% endif %}>
+                                    <a href="{{ navItemChild.fullUrl }}" title="{{ navItemChild.displayName }}">{{ navItemChild.displayName|ucfirst }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endif %}
+
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

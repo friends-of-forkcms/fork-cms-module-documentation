@@ -1,0 +1,21 @@
+{#
+  variables that are available:
+  - {{ documentationCategories }}: contains all categories, along with all questions inside a category
+#}
+
+
+{% if not documentationCategories %}
+	<div id="documentationIndex">
+		<section class="mod">
+			<div class="inner">
+				<div class="bd content">
+					<p>{{ 'msg.DocumentationNoItems'|trans }}</p>
+				</div>
+			</div>
+		</section>
+	</div>
+{% endif %}
+
+{% if documentationCategories %}
+
+{% endif %}
