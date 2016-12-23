@@ -2,6 +2,7 @@
 
 namespace Frontend\Modules\Documentation\Resources;
 
+use Frontend\Modules\Documentation\Engine\DocumentationHelper;
 use Frontend\Modules\Documentation\Engine\Model;
 
 /**
@@ -277,7 +278,12 @@ class NavigationItem
      */
     public function getHtml()
     {
-        return Model::getArticleData($this);
+        $article = Model::getArticleData($this);
+
+        // Cleanup 01.%20article.md links to a friendly url format
+        $article = DocumentationHelper::rewriteInternalLinksToFriendlyUrl($article);
+
+        return $article;
     }
 
     /**
