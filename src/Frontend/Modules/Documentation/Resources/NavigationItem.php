@@ -114,7 +114,7 @@ class NavigationItem
 
         // Find the current index
         $parentChildrenItems = $this->parent->getChildren()->getItems();
-        $currentIndex = array_search($this, $parentChildrenItems);
+        $currentIndex = array_search($this, $parentChildrenItems, true);
 
         // Find previous item
         if ($currentIndex !== false && isset($parentChildrenItems[$currentIndex - 1])) {
@@ -136,7 +136,7 @@ class NavigationItem
 
         // Find the current index
         $parentChildrenItems = $this->parent->getChildren()->getItems();
-        $currentIndex = array_search($this, $parentChildrenItems);
+        $currentIndex = array_search($this, $parentChildrenItems, true);
 
         // Find previous item
         if ($currentIndex !== false && isset($parentChildrenItems[$currentIndex + 1])) {

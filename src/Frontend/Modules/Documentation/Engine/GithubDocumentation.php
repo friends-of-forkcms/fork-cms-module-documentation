@@ -44,11 +44,6 @@ class GithubDocumentation implements RepositoryInterface
     private $repository;
 
     /**
-     * @var Navigation
-     */
-    private $navigation;
-
-    /**
      * @var Flysystem
      */
     private $cache;
@@ -93,7 +88,7 @@ class GithubDocumentation implements RepositoryInterface
         $token = FrontendModel::get('fork.settings')->get('Documentation', 'auth_token');
 
         // Authenticate
-        if (isset($token)) {
+        if (!empty($token)) {
             $this->client->authenticate($token, null, Client::AUTH_HTTP_TOKEN);
         }
 
@@ -103,7 +98,7 @@ class GithubDocumentation implements RepositoryInterface
         $this->cache = new Flysystem($filesystem);
 
         // Build/set the navigation
-        $this->navigation = $this->getNavigation();
+        $this->getNavigation();
     }
 
     /**
@@ -119,9 +114,7 @@ class GithubDocumentation implements RepositoryInterface
         $repoContents = $githubRepoApi->contents()->show($this->organization, $this->repository);
 
         // Build a navigation tree from the Github repository
-        $navigation = $this->buildTree($repoContents);
-
-        return $navigation;
+        return $this->buildTree($repoContents);
     }
 
     /**
@@ -143,7 +136,7 @@ class GithubDocumentation implements RepositoryInterface
         // Loop every file/dir in the repository.
         foreach ($elements as $element) {
             // Don't process files/folders that are in the exclusions list, skip to the next foreach item
-            if (in_array($element['name'], self::EXCLUSIONS)) {
+            if (in_array($element['name'], self::EXCLUSIONS, true)) {
                 continue;
             }
 
@@ -289,7 +282,7 @@ class GithubDocumentation implements RepositoryInterface
         if (empty($dataJson)) {
             throw new BadRequestHttpException("Content is empty");
         }
-        if ($request->get('content-type') !== 'application/json' && $data === null) {
+        if ($data === null && $request->get('content-type') !== 'application/json') {
             throw new BadRequestHttpException("Content is not valid json");
         }
 

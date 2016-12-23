@@ -96,7 +96,7 @@ class Detail extends FrontendBaseBlock
         $cacheKey = 'article_' . md5($guideUrlSlug . '-' . $articleUrlSlug);
         $this->articleHtml = $cache->get($cacheKey);
 
-        if (!$this->articleHtml) {
+        if (empty($this->articleHtml)) {
             $this->articleHtml = $this->articleItem->getHtml();
             $cache->set($cacheKey, $this->articleHtml);
         }

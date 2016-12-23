@@ -22,9 +22,7 @@ class Model
     public static function getNavigation()
     {
         $repositoryDocs = new GithubDocumentationAdapter(GithubDocumentation::getInstance());
-        $navigation = $repositoryDocs->getNavigation();
-
-        return $navigation;
+        return $repositoryDocs->getNavigation();
     }
 
     /**
@@ -34,9 +32,7 @@ class Model
     public static function getArticleData($navigationItem)
     {
         $repositoryDocs = new GithubDocumentationAdapter(GithubDocumentation::getInstance());
-        $articleData = $repositoryDocs->getArticleData($navigationItem);
-
-        return $articleData;
+        return $repositoryDocs->getArticleData($navigationItem);
     }
 
     /**
