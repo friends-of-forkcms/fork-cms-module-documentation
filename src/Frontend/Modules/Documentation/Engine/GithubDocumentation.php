@@ -55,6 +55,7 @@ class GithubDocumentation implements RepositoryInterface
         '.gitignore',
         'README.md',
         'assets',
+        'img',
     ];
 
     /**
@@ -62,7 +63,7 @@ class GithubDocumentation implements RepositoryInterface
      *
      * @return GithubDocumentation The Singleton instance.
      */
-    public static function getInstance()
+    public static function getInstance(): GithubDocumentation
     {
         if (null === static::$instance) {
             static::$instance = new static();
@@ -106,7 +107,7 @@ class GithubDocumentation implements RepositoryInterface
      *
      * @return Navigation
      */
-    private function buildNavigation()
+    private function buildNavigation(): Navigation
     {
         // Get contents from the Github repository
         /** @var Repo $githubRepoApi */
@@ -125,7 +126,7 @@ class GithubDocumentation implements RepositoryInterface
      * @param NavigationItem|null $parent
      * @return Navigation
      */
-    private function buildTree(array $elements, $parentSlug = '', $parent = null)
+    private function buildTree(array $elements, $parentSlug = '', $parent = null): Navigation
     {
         // Create our Navigation object that will function as a collection of items.
         $navigation = new Navigation();
@@ -143,7 +144,7 @@ class GithubDocumentation implements RepositoryInterface
             // Create the navigation item
             $name = DocumentationHelper::cleanupName($element['name']);
             $urlSlug = DocumentationHelper::filenameToUrl($name);
-            $fullUrl = FrontendNavigation::getURLForBlock('Documentation', 'Detail') . '/' . $parentSlug . $urlSlug;
+            $fullUrl = FrontendNavigation::getUrlForBlock('Documentation', 'Detail') . '/' . $parentSlug . $urlSlug;
             $navItem = new NavigationItem(
                 DocumentationHelper::filenameToLabel($name),
                 $element['name'],
@@ -190,8 +191,9 @@ class GithubDocumentation implements RepositoryInterface
      *
      * @param string $filePath
      * @return string
+     * @throws \Guzzle\Common\Exception\RuntimeException
      */
-    private function getContent($filePath)
+    private function getContent($filePath): string
     {
         // Make URL to the file in our repository
         $organisationName = urlencode($this->organization);
@@ -209,8 +211,9 @@ class GithubDocumentation implements RepositoryInterface
      *
      * @param string $content Base64 content
      * @return string HTML output
+     * @throws \Github\Exception\InvalidArgumentException
      */
-    private function parseBase64ToMarkdown($content)
+    private function parseBase64ToMarkdown($content): string
     {
         /** @var Markdown $markdownApi */
         $markdownApi = $this->client->api('markdown');
@@ -222,8 +225,10 @@ class GithubDocumentation implements RepositoryInterface
      *
      * @param NavigationItem $navigationItem
      * @return string
+     * @throws \Guzzle\Common\Exception\RuntimeException
+     * @throws \Github\Exception\InvalidArgumentException
      */
-    public function getArticleData(NavigationItem $navigationItem)
+    public function getArticleData(NavigationItem $navigationItem): string
     {
         // Get original filepath
         $originalFilePath = $navigationItem->getOriginalFilePath();
@@ -239,25 +244,25 @@ class GithubDocumentation implements RepositoryInterface
      * Fetch the navigation and cache it
      * @return Navigation
      */
-    public function getNavigation()
+    public function getNavigation(): Navigation
     {
         $cachedNavigation = $this->cache->get('navigation');
 
-        // If no cached navigation is available, generate it.
+        // If no cached navigation is available, build it.
         if (empty($cachedNavigation)) {
             $navigation = $this->buildNavigation();
             $this->cache->set('navigation', $navigation);
             return $navigation;
-        } else {
-            return $cachedNavigation;
         }
+
+        return $cachedNavigation;
     }
 
     /**
      * @param NavigationItem $navigationItem
      * @return string
      */
-    private function getArticleEditLink(NavigationItem $navigationItem)
+    private function getArticleEditLink(NavigationItem $navigationItem): string
     {
         if ($navigationItem->isDir()) {
             return null;
@@ -272,8 +277,9 @@ class GithubDocumentation implements RepositoryInterface
      * @param Request $request
      * @throws BadRequestHttpException If content is empty or json is not valid.
      * @return bool
+     * @throws \LogicException
      */
-    public function onWebhookPostReceive(Request $request)
+    public function onWebhookPostReceive(Request $request): bool
     {
         $dataJson = $request->getContent();
         $data = json_decode($dataJson, true);
@@ -283,7 +289,7 @@ class GithubDocumentation implements RepositoryInterface
             throw new BadRequestHttpException("Content is empty");
         }
         if ($data === null && $request->get('content-type') !== 'application/json') {
-            throw new BadRequestHttpException("Content is not valid json");
+            throw new BadRequestHttpException('Content is not valid json');
         }
 
         // Did we receive a push/commit event from github? Clear the documentation cache

@@ -17,7 +17,7 @@ class DocumentationHelper
      * @param string $filename
      * @return string
      */
-    public static function filenameToLabel($filename)
+    public static function filenameToLabel($filename): string
     {
         return str_replace('_', ' ', $filename);
     }
@@ -29,7 +29,7 @@ class DocumentationHelper
      * @param string $filename
      * @return string
      */
-    public static function filenameToUrl($filename)
+    public static function filenameToUrl($filename): string
     {
         return str_replace(array(' ', '_'), '-', $filename);
     }
@@ -40,10 +40,9 @@ class DocumentationHelper
      * @param $name
      * @return string
      */
-    public static function extractExtensionFromName($name)
+    public static function extractExtensionFromName($name): string
     {
-        $ext = substr(strrchr($name, '.'), 1);
-        return $ext;
+        return substr(strrchr($name, '.'), 1);
     }
 
     /**
@@ -52,7 +51,7 @@ class DocumentationHelper
      * @param $name
      * @return string
      */
-    public static function cleanupName($name)
+    public static function cleanupName($name): string
     {
         // Urldecode it
         $name = rawurldecode($name);
@@ -76,7 +75,7 @@ class DocumentationHelper
      * @param string $article
      * @return string
      */
-    public static function rewriteInternalLinksToFriendlyUrl($article)
+    public static function rewriteInternalLinksToFriendlyUrl($article): string
     {
         $markdownArticleMatches = [];
 
@@ -84,10 +83,10 @@ class DocumentationHelper
         preg_match_all('/(?<=href=")(..\/)*\d+(\.|-|(%20)*)(%20)*\s*.*\.md/mi', $article, $markdownArticleMatches);
 
         foreach ($markdownArticleMatches[0] as $item) {
-            $friendlyUrl = DocumentationHelper::filenameToUrl(DocumentationHelper::cleanupName($item));
+            $friendlyUrl = self::filenameToUrl(self::cleanupName($item));
 
             if (preg_match('/^(..\/)+/', $item)) {
-                $friendlyUrl = FrontendNavigation::getURLForBlock('Documentation', 'Detail') . "/$friendlyUrl";
+                $friendlyUrl = FrontendNavigation::getUrlForBlock('Documentation', 'Detail') . "/$friendlyUrl";
             }
 
             $article = str_replace($item, $friendlyUrl, $article);

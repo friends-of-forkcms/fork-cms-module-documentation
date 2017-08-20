@@ -33,7 +33,7 @@ class GithubDocumentationAdapter implements DocumentationInterface
      *
      * @return Navigation
      */
-    public function getNavigation()
+    public function getNavigation(): Navigation
     {
         return $this->githubDocs->getNavigation();
     }
@@ -43,8 +43,10 @@ class GithubDocumentationAdapter implements DocumentationInterface
      *
      * @param NavigationItem $navigationItem
      * @return string
+     * @throws \Guzzle\Common\Exception\RuntimeException
+     * @throws \Github\Exception\InvalidArgumentException
      */
-    public function getArticleData(NavigationItem $navigationItem)
+    public function getArticleData(NavigationItem $navigationItem): string
     {
         return $this->githubDocs->getArticleData($navigationItem);
     }
@@ -53,8 +55,10 @@ class GithubDocumentationAdapter implements DocumentationInterface
      * Post-receive action for webhooks
      * @param Request $request
      * @return bool
+     * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @throws \LogicException
      */
-    public function onWebhookPostReceive(Request $request)
+    public function onWebhookPostReceive(Request $request): bool
     {
         return $this->githubDocs->onWebhookPostReceive($request);
     }

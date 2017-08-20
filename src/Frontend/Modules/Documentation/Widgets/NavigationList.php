@@ -21,7 +21,7 @@ class NavigationList extends FrontendBaseWidget
     /**
      * Execute the extra
      */
-    public function execute()
+    public function execute(): void
     {
         // Call parent
         parent::execute();
@@ -40,17 +40,15 @@ class NavigationList extends FrontendBaseWidget
         $this->navigation = Model::getNavigation();
 
         // Get URL parameters
-        $guideUrlSlug = $this->URL->getParameter(1);
-        $articleUrlSlug = $this->URL->getParameter(2);
+        $guideUrlSlug = $this->url->getParameter(1);
+        $articleUrlSlug = $this->url->getParameter(2);
 
         // Set the current guide & article in the URL as active
-        if ($guideUrlSlug !== null && $articleUrlSlug) {
-            if ($this->navigation->hasItem($guideUrlSlug)) {
-                $guideItem = $this->navigation->getItem($guideUrlSlug)->setSelected(true);
+        if ($guideUrlSlug !== null && $articleUrlSlug && $this->navigation->hasItem($guideUrlSlug)) {
+            $guideItem = $this->navigation->getItem($guideUrlSlug)->setSelected(true);
 
-                if ($guideItem->getChildren()->hasItem($articleUrlSlug)) {
-                    $guideItem->getChildren()->getItem($articleUrlSlug)->setSelected(true);
-                };
+            if ($guideItem->getChildren()->hasItem($articleUrlSlug)) {
+                $guideItem->getChildren()->getItem($articleUrlSlug)->setSelected(true);
             }
         }
     }
@@ -60,6 +58,6 @@ class NavigationList extends FrontendBaseWidget
      */
     private function parse()
     {
-        $this->tpl->assign('widgetDocNavList', $this->navigation->toArray());
+        $this->template->assign('widgetDocNavList', $this->navigation->toArray());
     }
 }

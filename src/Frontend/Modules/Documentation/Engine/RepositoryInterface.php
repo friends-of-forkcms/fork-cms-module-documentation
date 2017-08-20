@@ -15,11 +15,11 @@ interface RepositoryInterface
     /**
      * @return Navigation
      */
-    public function getNavigation();
+    public function getNavigation(): Navigation;
 
     /**
      * @param NavigationItem $navigationItem
      * @return string
      */
-    public function getArticleData(NavigationItem $navigationItem);
+    public function getArticleData(NavigationItem $navigationItem): string;
 }

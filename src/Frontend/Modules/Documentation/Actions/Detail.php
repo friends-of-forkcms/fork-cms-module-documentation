@@ -36,7 +36,7 @@ class Detail extends FrontendBaseBlock
     /**
      * Execute the extra
      */
-    public function execute()
+    public function execute(): void
     {
         parent::execute();
 
@@ -48,14 +48,14 @@ class Detail extends FrontendBaseBlock
     /**
      * Load the data, don't forget to validate the incoming data
      */
-    private function getData()
+    private function getData(): void
     {
         // Get our navigation
         $this->navigation = Model::getNavigation();
 
         // Get parameters
-        $guideUrlSlug = $this->URL->getParameter(1);
-        $articleUrlSlug = $this->URL->getParameter(2);
+        $guideUrlSlug = $this->url->getParameter(1);
+        $articleUrlSlug = $this->url->getParameter(2);
 
         // Throw a 404 if guide parameter is null, or it doesn't exist in our navigation tree.
         if ($guideUrlSlug === null || !$this->navigation->hasItem($guideUrlSlug)) {
@@ -86,7 +86,7 @@ class Detail extends FrontendBaseBlock
      * @param $guideUrlSlug
      * @param $articleUrlSlug
      */
-    private function getArticleHtml($guideUrlSlug, $articleUrlSlug)
+    private function getArticleHtml($guideUrlSlug, $articleUrlSlug): void
     {
         // Init cache
         $adapter = new Local(FRONTEND_CACHE_PATH.'/Documentation/', LOCK_EX);
@@ -105,14 +105,14 @@ class Detail extends FrontendBaseBlock
     /**
      * Parse the data into the template
      */
-    private function parse()
+    private function parse(): void
     {
-        $this->tpl->assign('articleData', $this->articleHtml);
-        $this->tpl->assign('articleEditLink', $this->articleItem->getEditUrl());
+        $this->template->assign('articleData', $this->articleHtml);
+        $this->template->assign('articleEditLink', $this->articleItem->getEditUrl());
 
         $prevLink = $this->articleItem->getPreviousItem();
         $nextLink = $this->articleItem->getNextItem();
-        $this->tpl->assign('prevLink', isset($prevLink) ? $prevLink->toArray() : []);
-        $this->tpl->assign('nextLink', isset($nextLink) ? $nextLink->toArray() : []);
+        $this->template->assign('prevLink', $prevLink !== null ? $prevLink->toArray() : []);
+        $this->template->assign('nextLink', $nextLink !== null ? $nextLink->toArray() : []);
     }
 }

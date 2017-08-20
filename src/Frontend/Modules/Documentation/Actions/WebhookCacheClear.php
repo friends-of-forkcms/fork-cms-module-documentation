@@ -22,8 +22,9 @@ class WebhookCacheClear extends FrontendBaseBlock
 {
     /**
      * Execute the action
+     * @throws \Exception When cache clear failed on us
      */
-    public function execute()
+    public function execute(): void
     {
         parent::execute();
         $this->loadTemplate();
