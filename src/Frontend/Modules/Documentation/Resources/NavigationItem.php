@@ -48,6 +48,11 @@ class NavigationItem
     private $editUrl;
 
     /**
+     * @var string
+     */
+    private $rawBaseUrl;
+
+    /**
      * @var Navigation
      */
     private $children;
@@ -86,7 +91,7 @@ class NavigationItem
      * Transform the NavigationItem to an array (for templating purposes)
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $itemArray = [
             'displayName' => $this->displayName,
@@ -96,6 +101,7 @@ class NavigationItem
             'urlSlug' => $this->urlSlug,
             'fullUrl' => $this->fullUrl,
             'editUrl' => $this->editUrl,
+            'rawBaseUrl' => $this->rawBaseUrl,
             'children' => $this->children !== null ? $this->children->toArray() : [],
             'selected' => $this->selected,
         ];
@@ -107,7 +113,7 @@ class NavigationItem
      * Fetch the previous item in the navigation.
      * @return NavigationItem|null
      */
-    public function getPreviousItem()
+    public function getPreviousItem(): ?NavigationItem
     {
         if (empty($this->parent) || empty($this->parent->getChildren())) {
             return null;
@@ -129,7 +135,7 @@ class NavigationItem
      * Fetch the next item in the navigation
      * @return NavigationItem|null
      */
-    public function getNextItem()
+    public function getNextItem(): ?NavigationItem
     {
         if (empty($this->parent) || empty($this->parent->getChildren())) {
             return null;
@@ -150,7 +156,7 @@ class NavigationItem
     /**
      * @return NavigationItem
      */
-    public function getParent()
+    public function getParent(): NavigationItem
     {
         return $this->parent;
     }
@@ -159,7 +165,7 @@ class NavigationItem
      * @param NavigationItem $parent
      * @return NavigationItem
      */
-    public function setParent(NavigationItem $parent)
+    public function setParent(NavigationItem $parent): NavigationItem
     {
         $this->parent = $parent;
         return $this;
@@ -168,7 +174,7 @@ class NavigationItem
     /**
      * @param NavigationItem $item
      */
-    public function addChild(NavigationItem $item)
+    public function addChild(NavigationItem $item): void
     {
         $this->children->addItem($item);
     }
@@ -177,7 +183,7 @@ class NavigationItem
      * @param Navigation $children
      * @return NavigationItem
      */
-    public function setChildren(Navigation $children)
+    public function setChildren(Navigation $children): NavigationItem
     {
         $this->children = $children;
         return $this;
@@ -186,7 +192,7 @@ class NavigationItem
     /**
      * @return string
      */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         return $this->displayName;
     }
@@ -194,7 +200,7 @@ class NavigationItem
     /**
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
@@ -202,7 +208,7 @@ class NavigationItem
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -210,7 +216,7 @@ class NavigationItem
     /**
      * @return bool
      */
-    public function isDir()
+    public function isDir(): bool
     {
         return $this->type === 'dir';
     }
@@ -218,7 +224,7 @@ class NavigationItem
     /**
      * @return bool
      */
-    public function isFile()
+    public function isFile(): bool
     {
         return $this->type === 'file';
     }
@@ -226,7 +232,7 @@ class NavigationItem
     /**
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -234,7 +240,7 @@ class NavigationItem
     /**
      * @return string
      */
-    public function getUrlSlug()
+    public function getUrlSlug(): string
     {
         return $this->urlSlug;
     }
@@ -242,7 +248,7 @@ class NavigationItem
     /**
      * @return string
      */
-    public function getFullUrl()
+    public function getFullUrl(): string
     {
         return $this->fullUrl;
     }
@@ -250,7 +256,7 @@ class NavigationItem
     /**
      * @return Navigation
      */
-    public function getChildren()
+    public function getChildren(): Navigation
     {
         return $this->children;
     }
@@ -258,7 +264,7 @@ class NavigationItem
     /**
      * @return string
      */
-    public function getEditUrl()
+    public function getEditUrl(): string
     {
         return $this->editUrl;
     }
@@ -267,7 +273,7 @@ class NavigationItem
      * @param string $editUrl
      * @return NavigationItem
      */
-    public function setEditUrl($editUrl)
+    public function setEditUrl($editUrl): NavigationItem
     {
         $this->editUrl = $editUrl;
         return $this;
@@ -276,12 +282,31 @@ class NavigationItem
     /**
      * @return string
      */
-    public function getHtml()
+    public function getRawBaseUrl(): string
+    {
+        return $this->rawBaseUrl;
+    }
+
+    /**
+     * @param string $rawBaseUrl
+     * @return NavigationItem
+     */
+    public function setRawBaseUrl($rawBaseUrl): NavigationItem
+    {
+        $this->rawBaseUrl = $rawBaseUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHtml(): string
     {
         $article = Model::getArticleData($this);
 
         // Cleanup 01.%20article.md links to a friendly url format
         $article = DocumentationHelper::rewriteInternalLinksToFriendlyUrl($article);
+        $article = DocumentationHelper::rewriteRelativeImageUrls($article, $this->getParent()->getRawBaseUrl());
 
         return $article;
     }
@@ -289,7 +314,7 @@ class NavigationItem
     /**
      * @return bool
      */
-    public function isSelected()
+    public function isSelected(): bool
     {
         return $this->selected;
     }
@@ -298,7 +323,7 @@ class NavigationItem
      * @param bool $selected
      * @return NavigationItem
      */
-    public function setSelected($selected)
+    public function setSelected($selected): NavigationItem
     {
         $this->selected = $selected;
 
@@ -310,7 +335,7 @@ class NavigationItem
      *
      * @return string
      */
-    public function getOriginalFilePath()
+    public function getOriginalFilePath(): string
     {
         $originalFilePath = '';
         if ($this->getParent()) {

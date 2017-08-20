@@ -36,7 +36,7 @@ class Detail extends FrontendBaseBlock
     /**
      * Execute the extra
      */
-    public function execute()
+    public function execute(): void
     {
         parent::execute();
 
@@ -48,14 +48,14 @@ class Detail extends FrontendBaseBlock
     /**
      * Load the data, don't forget to validate the incoming data
      */
-    private function getData()
+    private function getData(): void
     {
         // Get our navigation
         $this->navigation = Model::getNavigation();
 
         // Get parameters
-        $guideUrlSlug = $this->URL->getParameter(1);
-        $articleUrlSlug = $this->URL->getParameter(2);
+        $guideUrlSlug = $this->url->getParameter(1);
+        $articleUrlSlug = $this->url->getParameter(2);
 
         // Throw a 404 if guide parameter is null, or it doesn't exist in our navigation tree.
         if ($guideUrlSlug === null || !$this->navigation->hasItem($guideUrlSlug)) {
@@ -79,14 +79,15 @@ class Detail extends FrontendBaseBlock
         }
 
         // Get the html output of the article
-        $this->getArticleHtml($guideUrlSlug, $articleUrlSlug);
+        $this->articleHtml = $this->getArticleHtml($guideUrlSlug, $articleUrlSlug);
     }
 
     /**
-     * @param $guideUrlSlug
-     * @param $articleUrlSlug
+     * @param string $guideUrlSlug
+     * @param string $articleUrlSlug
+     * @return string
      */
-    private function getArticleHtml($guideUrlSlug, $articleUrlSlug)
+    private function getArticleHtml(string $guideUrlSlug, string $articleUrlSlug): string
     {
         // Init cache
         $adapter = new Local(FRONTEND_CACHE_PATH.'/Documentation/', LOCK_EX);
@@ -94,25 +95,27 @@ class Detail extends FrontendBaseBlock
         $cache = new Flysystem($filesystem);
 
         $cacheKey = 'article_' . md5($guideUrlSlug . '-' . $articleUrlSlug);
-        $this->articleHtml = $cache->get($cacheKey);
+        $articleHtml = $cache->get($cacheKey);
 
-        if (empty($this->articleHtml)) {
-            $this->articleHtml = $this->articleItem->getHtml();
-            $cache->set($cacheKey, $this->articleHtml);
+        if (empty($articleHtml)) {
+            $articleHtml = $this->articleItem->getHtml();
+            $cache->set($cacheKey, $articleHtml);
         }
+
+        return $articleHtml;
     }
 
     /**
      * Parse the data into the template
      */
-    private function parse()
+    private function parse(): void
     {
-        $this->tpl->assign('articleData', $this->articleHtml);
-        $this->tpl->assign('articleEditLink', $this->articleItem->getEditUrl());
+        $this->template->assign('articleData', $this->articleHtml);
+        $this->template->assign('articleEditLink', $this->articleItem->getEditUrl());
 
         $prevLink = $this->articleItem->getPreviousItem();
         $nextLink = $this->articleItem->getNextItem();
-        $this->tpl->assign('prevLink', isset($prevLink) ? $prevLink->toArray() : []);
-        $this->tpl->assign('nextLink', isset($nextLink) ? $nextLink->toArray() : []);
+        $this->template->assign('prevLink', $prevLink !== null ? $prevLink->toArray() : []);
+        $this->template->assign('nextLink', $nextLink !== null ? $nextLink->toArray() : []);
     }
 }

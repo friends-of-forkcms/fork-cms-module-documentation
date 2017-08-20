@@ -22,7 +22,7 @@ class Index extends FrontendBaseBlock
     /**
      * Execute the extra
      */
-    public function execute()
+    public function execute(): void
     {
         parent::execute();
 
@@ -34,7 +34,7 @@ class Index extends FrontendBaseBlock
     /**
      * Load the data, don't forget to validate the incoming data
      */
-    private function getData()
+    private function getData(): void
     {
         // Get our navigation
         $this->navigation = Model::getNavigation();
@@ -47,7 +47,8 @@ class Index extends FrontendBaseBlock
     /**
      * Parse the data into the template
      */
-    private function parse()
+    private function parse(): void
     {
+        // Nothing to parse here
     }
 }

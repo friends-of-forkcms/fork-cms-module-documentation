@@ -28,6 +28,10 @@
                 <translation language="nl"><![CDATA[organisatie/gebruiker]]></translation>
                 <translation language="en"><![CDATA[organization/user]]></translation>
             </item>
+            <item type="label" name="Subfolder">
+                <translation language="nl"><![CDATA[submap]]></translation>
+                <translation language="en"><![CDATA[subfolder]]></translation>
+            </item>
             <item type="label" name="AuthToken">
                 <translation language="nl"><![CDATA[OAuth Token]]></translation>
                 <translation language="en"><![CDATA[OAuth Token]]></translation>

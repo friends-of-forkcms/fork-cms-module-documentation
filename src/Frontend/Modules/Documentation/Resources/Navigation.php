@@ -17,7 +17,7 @@ class Navigation
     /**
      * @param NavigationItem $item
      */
-    public function addItem(NavigationItem $item)
+    public function addItem(NavigationItem $item): void
     {
         $this->items[] = $item;
     }
@@ -25,7 +25,7 @@ class Navigation
     /**
      * @return NavigationItem[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -34,7 +34,7 @@ class Navigation
      * @param array $items
      * @return Navigation
      */
-    public function setItems(array $items)
+    public function setItems(array $items): Navigation
     {
         $this->items = $items;
         return $this;
@@ -44,7 +44,7 @@ class Navigation
      * Get the first navigationItem
      * @return NavigationItem|null
      */
-    public function getFirstItem()
+    public function getFirstItem(): ?NavigationItem
     {
         if (empty($this->items)) {
             return null;
@@ -58,7 +58,7 @@ class Navigation
      * @param $urlSlug
      * @return bool If the item was found in the navigation items.
      */
-    public function hasItem($urlSlug)
+    public function hasItem($urlSlug): bool
     {
         return $this->getItem($urlSlug) !== null;
     }
@@ -67,7 +67,7 @@ class Navigation
      * @param $urlSlug
      * @return NavigationItem
      */
-    public function getItem($urlSlug)
+    public function getItem($urlSlug): ?NavigationItem
     {
         foreach ($this->items as $item) {
             if ($item->getUrlSlug() === $urlSlug) {
@@ -84,7 +84,7 @@ class Navigation
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $navigationArray = [];
 

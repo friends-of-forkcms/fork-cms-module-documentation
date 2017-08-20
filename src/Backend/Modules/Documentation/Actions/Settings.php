@@ -3,10 +3,8 @@
 namespace Backend\Modules\Documentation\Actions;
 
 use Backend\Core\Engine\Base\ActionEdit as BackendBaseActionEdit;
-use Backend\Core\Engine\Authentication as BackendAuthentication;
 use Backend\Core\Engine\Model as BackendModel;
 use Backend\Core\Engine\Form as BackendForm;
-use Backend\Core\Engine\Language as BL;
 
 /**
  * This is the settings-action, it will display a form to set general blog settings
@@ -18,7 +16,7 @@ class Settings extends BackendBaseActionEdit
     /**
      * Execute the action
      */
-    public function execute()
+    public function execute(): void
     {
         parent::execute();
 
@@ -34,26 +32,20 @@ class Settings extends BackendBaseActionEdit
      */
     private function loadForm()
     {
-        $this->frm = new BackendForm('settings');
+        $this->form = new BackendForm('settings');
 
         // Where do we get our documentation from?
-        $organization = $this->frm->addText(
-            'organization',
-            $this->get('fork.settings')->get($this->URL->getModule(), 'organization')
-        );
+        $organization = $this->form->addText('organization', $this->get('fork.settings')->get($this->url->getModule(), 'organization'));
         $organization->setAttribute('placeholder', 'Github user/org');
 
-        $repository = $this->frm->addText(
-            'repository',
-            $this->get('fork.settings')->get($this->URL->getModule(), 'repository')
-        );
+        $repository = $this->form->addText('repository', $this->get('fork.settings')->get($this->url->getModule(), 'repository'));
         $repository->setAttribute('placeholder', 'Github repo name');
 
+        $repository = $this->form->addText('subfolder', $this->get('fork.settings')->get($this->url->getModule(), 'subfolder'));
+        $repository->setAttribute('placeholder', 'Optional subfolder in the repository');
+
         // Authenticate?
-        $this->frm->addPassword(
-            'auth_token',
-            $this->get('fork.settings')->get($this->URL->getModule(), 'auth_token')
-        );
+        $this->form->addPassword('auth_token', $this->get('fork.settings')->get($this->url->getModule(), 'auth_token'));
     }
 
     /**
@@ -61,23 +53,19 @@ class Settings extends BackendBaseActionEdit
      */
     private function validateForm()
     {
-        if ($this->frm->isSubmitted()) {
-            if ($this->frm->isCorrect()) {
-                // set our settings
-                $organization = strtolower($this->frm->getField('organization')->getValue());
-                $repository = strtolower($this->frm->getField('repository')->getValue());
-                $authToken = $this->frm->getField('auth_token')->getValue();
+        if ($this->form->isSubmitted() && $this->form->isCorrect()) {
+            $organization = strtolower($this->form->getField('organization')->getValue());
+            $repository = strtolower($this->form->getField('repository')->getValue());
+            $subfolder = strtolower($this->form->getField('subfolder')->getValue());
+            $authToken = $this->form->getField('auth_token')->getValue();
 
-                $this->get('fork.settings')->set($this->URL->getModule(), 'organization', $organization);
-                $this->get('fork.settings')->set($this->URL->getModule(), 'repository', $repository);
-                $this->get('fork.settings')->set($this->URL->getModule(), 'auth_token', $authToken);
+            $this->get('fork.settings')->set($this->url->getModule(), 'organization', $organization);
+            $this->get('fork.settings')->set($this->url->getModule(), 'repository', $repository);
+            $this->get('fork.settings')->set($this->url->getModule(), 'subfolder', $subfolder);
+            $this->get('fork.settings')->set($this->url->getModule(), 'auth_token', $authToken);
 
-                // Trigger event
-                BackendModel::triggerEvent($this->getModule(), 'after_saved_settings');
-
-                // Redirect to the settings page
-                $this->redirect(BackendModel::createURLForAction('Settings') . '&report=saved');
-            }
+            // Redirect to the settings page
+            $this->redirect(BackendModel::createUrlForAction('Settings') . '&report=saved');
         }
     }
 }
